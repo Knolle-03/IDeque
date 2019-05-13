@@ -34,14 +34,14 @@ public interface IDeque<E> {
      * @return the tail of this deque
      * @throws NoSuchElementException if this deque is empty
      */
-    E removeLast();
+    E removeLast() throws NoSuchElementException;
     /**
      * Retrieves, but does not remove, the first element of this deque.
      *
      * @return the head of this deque
      * @throws NoSuchElementException if this deque is empty
      */
-    E getFirst();
+    E getFirst()  throws NoSuchElementException;
 
     /**
      * Retrieves, but does not remove, the last element of this deque.
@@ -49,7 +49,7 @@ public interface IDeque<E> {
      * @return the tail of this deque
      * @throws NoSuchElementException if this deque is empty
      */
-    E getLast();
+    E getLast()  throws NoSuchElementException;
     /**
      * Checks if this deque is empty.
      * @return true, if this deque is empty, false otherwise.

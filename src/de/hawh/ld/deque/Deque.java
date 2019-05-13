@@ -6,10 +6,10 @@ import java.util.Objects;
 
 
 public class Deque<E> implements IDeque<E>, Iterable<E> {
+
     private Node head;
     private Node tail;
     private int dequeSize = 0;
-
 
     public Deque(){}
 
@@ -28,7 +28,7 @@ public class Deque<E> implements IDeque<E>, Iterable<E> {
     }
 
     @Override
-    public void addFirst(E e) {
+    public void addFirst(E e) throws IllegalArgumentException {
         if(e == null){
             throw new IllegalArgumentException();
         }
@@ -47,7 +47,7 @@ public class Deque<E> implements IDeque<E>, Iterable<E> {
     }
 
     @Override
-    public void addLast(E e) {
+    public void addLast(E e) throws IllegalArgumentException {
         if(e == null){
             throw new IllegalArgumentException();
         }
@@ -83,7 +83,7 @@ public class Deque<E> implements IDeque<E>, Iterable<E> {
     }
 
     @Override
-    public E removeLast() {
+    public E removeLast() throws NoSuchElementException {
         if(tail == null){
             throw new NoSuchElementException();
         }
@@ -99,7 +99,7 @@ public class Deque<E> implements IDeque<E>, Iterable<E> {
     }
 
     @Override
-    public E getFirst() {
+    public E getFirst() throws NoSuchElementException {
         if(this.isEmpty()){
             throw new NoSuchElementException();
         }
@@ -107,7 +107,7 @@ public class Deque<E> implements IDeque<E>, Iterable<E> {
     }
 
     @Override
-    public E getLast() {
+    public E getLast() throws NoSuchElementException {
         if(this.isEmpty()){
             throw new NoSuchElementException();
         }
@@ -152,7 +152,7 @@ public class Deque<E> implements IDeque<E>, Iterable<E> {
 
     private class DataIterator implements Iterator<E> {
 
-        public Node current;
+        Node current;
 
         public DataIterator() {
             current = head;
