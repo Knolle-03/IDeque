@@ -1,5 +1,6 @@
 package de.hawh.ld.deque;
 import de.hawh.kahlbrandt.ss2019bai2pm2.a06.interfaces.IDeque;
+
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Objects;
@@ -7,8 +8,8 @@ import java.util.Objects;
 
 public class Deque<E> implements IDeque<E>, Iterable<E> {
 
-    private Node head;
-    private Node tail;
+    private Node start;
+
     private int dequeSize = 0;
 
     public Deque(){}
@@ -25,6 +26,21 @@ public class Deque<E> implements IDeque<E>, Iterable<E> {
         Node(E e){
             data = e;
         }
+
+
+        @SuppressWarnings("unchecked")
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            Node node = (Node) o;
+            return data == node.data;
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(data);
+        }
     }
 
     @Override
@@ -34,14 +50,14 @@ public class Deque<E> implements IDeque<E>, Iterable<E> {
         }
         Node newHead = new Node(e);
 
-        if(head == null){
-            head = newHead;
-            head.next = head;
-            head.prev = head;
+        if(isEmpty()){
+            start = newHead;
+            start.next = start;
+            start.prev = start;
         } else {
-            newHead.next = head;
-            head = newHead;
-            head.prev = tail;
+            newHead.next = start;
+            newHead.prev = start.prev;
+            start = newHead;
         }
         dequeSize++;
     }
@@ -53,44 +69,42 @@ public class Deque<E> implements IDeque<E>, Iterable<E> {
         }
         Node newTail = new Node(e);
 
-        if(tail != null){
-            newTail.prev = tail;
-            tail.next = newTail;
-        }
-
-        tail = newTail;
-        newTail.next = head;
-
-
-        if(head == null){
-            head = tail;
+        if(isEmpty()) {
+            start = newTail;
+            start.next = start;
+            start.prev = start;
+        } else {
+            newTail.next = start;
+            newTail.prev = start.prev;
+            start.prev.next = newTail;
+            start.prev = newTail;
         }
         dequeSize++;
     }
 
     @Override
     public E removeFirst() throws NoSuchElementException {
-        if(head == null){
+        if(isEmpty()){
             throw new NoSuchElementException();
         }
 
-        Node oldHead = head;
-        head = head.next;
+        Node oldStart = start;
+        start = start.next;
 
         dequeSize--;
 
-        return oldHead.data;
+        return oldStart.data;
     }
 
     @Override
     public E removeLast() throws NoSuchElementException {
-        if(tail == null){
+        if(isEmpty()){
             throw new NoSuchElementException();
         }
 
-        Node oldTail = tail;
-        tail = tail.prev;
-        tail.next = head;
+        Node oldTail = start.prev;
+        start.prev = start.prev.prev;
+        start.prev.next = start;
 
 
         dequeSize--;
@@ -103,7 +117,7 @@ public class Deque<E> implements IDeque<E>, Iterable<E> {
         if(this.isEmpty()){
             throw new NoSuchElementException();
         }
-        return head.data;
+        return start.data;
     }
 
     @Override
@@ -111,39 +125,63 @@ public class Deque<E> implements IDeque<E>, Iterable<E> {
         if(this.isEmpty()){
             throw new NoSuchElementException();
         }
-        return tail.data;
+        return start.prev.data;
     }
 
     @Override
     public boolean isEmpty() {
-        return head == null;
+        return start == null;
     }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Deque<E> that = (Deque<E>) o;
+        Iterator<E> thisIt = this.iterator();
+        Iterator<E> thatIt = that.iterator();
+        if (dequeSize != that.dequeSize) return false;
+        boolean truthVal = true;
+
+        for (int i = 0; i < dequeSize; i++) {
+            if (!thisIt.next().equals(thatIt.next())){
+                truthVal = false;
+            }
+
+        }
+        return truthVal;
+    }
+
+
+
+        @Override
+    public int hashCode() {
+        Iterator<E> it = iterator();
+        int hash = 31;
+            for (int i = 0; i < dequeSize; i++) {
+                hash *= it.next().hashCode();
+            }
+        return hash;
+    }
+
+
 
     @Override
     public String toString() {
         Iterator<E> it = iterator();
         StringBuilder dataString = new StringBuilder();
         for (int i = 0; i < dequeSize; i++) {
-            dataString.append(it.next()).append(", ");
-            System.out.println(dataString.toString());
+            if(i == dequeSize - 1){
+                dataString.append(it.next());
+            } else {
+                dataString.append(it.next()).append(", ");
+            }
         }
         return "DequeData: " + dataString.toString();
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Deque<?> deque = (Deque<?>) o;
-        return dequeSize == deque.dequeSize &&
-                Objects.equals(head, deque.head) &&
-                Objects.equals(tail, deque.tail);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(head, tail, dequeSize);
-    }
 
     @Override
     public Iterator<E> iterator() {
@@ -155,7 +193,7 @@ public class Deque<E> implements IDeque<E>, Iterable<E> {
         Node current;
 
         public DataIterator() {
-            current = head;
+            current = start;
         }
 
         @Override

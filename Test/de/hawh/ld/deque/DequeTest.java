@@ -16,6 +16,9 @@ class DequeTest {
     private Deque<Integer> intDeque = new Deque<>();
     private Deque<String> strDeque = new Deque<>();
     private Deque<String> emptyDeque = new Deque<>();
+    private Deque<Integer> identicalIntDeque = new Deque<>();
+    private Deque<String> identicalStrDeque = new Deque<>();
+    private Deque<String> identicalEmptyDeque = new Deque<>();
 
 
 
@@ -23,9 +26,11 @@ class DequeTest {
     void setUp() {
         for (Integer i : intTestData) {
             intDeque.addLast(i);
+            identicalIntDeque.addLast(i);
         }
         for (String str : strTestData) {
             strDeque.addLast(str);
+            identicalStrDeque.addLast(str);
         }
     }
 
@@ -88,5 +93,25 @@ class DequeTest {
     void isEmpty() {
         assertFalse(intDeque.isEmpty());
         assertTrue(emptyDeque.isEmpty());
+    }
+
+    @Test
+    void equals() {
+        assertEquals(intDeque, identicalIntDeque);
+        assertEquals(strDeque, identicalStrDeque);
+        assertEquals(emptyDeque, identicalEmptyDeque);
+        assertNotEquals(emptyDeque, intDeque);
+        assertNotEquals(strDeque, intDeque);
+        assertNotEquals(strDeque, emptyDeque);
+    }
+
+    @Test
+    void hash() {
+        assertEquals(intDeque.hashCode(), identicalIntDeque.hashCode());
+        assertEquals(strDeque.hashCode(), identicalStrDeque.hashCode());
+        assertEquals(emptyDeque.hashCode(), identicalEmptyDeque.hashCode());
+        assertNotEquals(emptyDeque.hashCode(), intDeque.hashCode());
+        assertNotEquals(strDeque.hashCode(), intDeque.hashCode());
+        assertNotEquals(strDeque.hashCode(), emptyDeque.hashCode());
     }
 }
