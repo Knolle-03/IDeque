@@ -132,9 +132,9 @@ public class Deque<E> implements IDeque<E>, Iterable<E> {
     @Override
     public int hashCode() {
         Iterator<E> it = iterator();
-        int hash = 31;
+        int hash = 7;
         for (int i = 0; i < dequeSize; i++) {
-            hash *= it.next().hashCode();
+            hash *= 31 + (it.next() == null ? 0 : it.next().hashCode());
         }
         return hash;
     }
