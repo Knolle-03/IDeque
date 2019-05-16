@@ -11,15 +11,14 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class DequeTest {
 
-    private List<Integer> intTestData = List.of(1,2,3,4,5,6);
-    private List<String> strTestData = List.of("H","e","l","l","o","!");
+    private List<Integer> intTestData = List.of(1, 2, 3, 4, 5, 6);
+    private List<String> strTestData = List.of("H", "e", "l", "l", "o", "!");
     private Deque<Integer> intDeque = new Deque<>();
     private Deque<String> strDeque = new Deque<>();
     private Deque<String> emptyDeque = new Deque<>();
     private Deque<Integer> identicalIntDeque = new Deque<>();
     private Deque<String> identicalStrDeque = new Deque<>();
     private Deque<String> identicalEmptyDeque = new Deque<>();
-
 
 
     @BeforeEach
@@ -65,28 +64,28 @@ class DequeTest {
     void removeFirst() {
         assertEquals(1, intDeque.removeFirst());
         assertEquals("H", strDeque.removeFirst());
-        assertThrows(NoSuchElementException.class, () ->  emptyDeque.removeFirst());
+        assertThrows(NoSuchElementException.class, () -> emptyDeque.removeFirst());
     }
 
     @Test
     void removeLast() {
         assertEquals(6, intDeque.removeLast());
         assertEquals("!", strDeque.removeLast());
-        assertThrows(NoSuchElementException.class, () ->  emptyDeque.removeLast());
+        assertThrows(NoSuchElementException.class, () -> emptyDeque.removeLast());
     }
 
     @Test
     void getFirst() {
         assertEquals(1, intDeque.getFirst());
         assertEquals("H", strDeque.getFirst());
-        assertThrows(NoSuchElementException.class, () ->  emptyDeque.getFirst());
+        assertThrows(NoSuchElementException.class, () -> emptyDeque.getFirst());
     }
 
     @Test
     void getLast() {
         assertEquals(6, intDeque.getLast());
         assertEquals("!", strDeque.getLast());
-        assertThrows(NoSuchElementException.class, () ->  emptyDeque.getLast());
+        assertThrows(NoSuchElementException.class, () -> emptyDeque.getLast());
     }
 
     @Test
